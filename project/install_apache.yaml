@@ -1,0 +1,26 @@
+---
+
+- name: "Test for install apache "
+  hosts: web_server
+  gather_facts: yes
+  vars:
+      my_order: "{{ order }}"
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: install apache2
+      apt: name={{item}} state=latest
+      with_items:
+        - apache2
+        - apache2-utils
+        - ssl-cert
+  # Install (Bottle) within a user home directory.
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+          - restart apache2
+
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted

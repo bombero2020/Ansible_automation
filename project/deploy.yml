@@ -1,0 +1,42 @@
+---
+
+- name: Example of using blocks
+  hosts: linux_cinnamon
+
+  tasks:
+    - name: Handle the error
+      block:
+        - debug:
+            msg: 'I execute normally'
+        - name: i force a failure
+          command: /bin/false
+        - debug:
+            msg: 'I never execute, due to the above task failing, :-('
+      rescue:
+        - debug:
+            msg: 'I caught an error, can do stuff here to fix it, :-)'
+    - name: Second block
+      block:
+        - debug:
+            msg: 'I execute normally'
+        - name: i force a failure
+          command: /bin/echo hola desde cinnamon
+          register: echo_out
+        - debug:
+            msg: "{{echo_out.failed}} This must be done, :-)"
+      rescue:
+          - debug:
+              msg: 'I caught an error, can do stuff here to fix it, :-)'
+#debug:
+
+handlers:
+    - name: update and upgrade
+      apt:
+        name: memcached
+        state: restarted
+      listen: "restart web services"
+    - name: restart apache
+      service:
+        name: apache
+        state: restarted
+      listen: "restart web services"
