@@ -1,0 +1,20 @@
+---
+
+- name: Playbook for copy dirs to remote
+  hosts: mint_lxfe
+  gather_facts: yes
+  vars:
+      my_order: "{{ order }}"
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: copy
+      copy:
+        src: /home/marcelo/Descargas
+        dest: /home/marizaga/Descargas
+      notify:
+        - print changes
+
+  handlers:
+    - name:

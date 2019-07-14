@@ -1,7 +1,7 @@
 ---
 
-- name: "Test for install apache "
-  hosts: web_server
+- name: playbook for install apache & mysql
+  hosts: localhost
   gather_facts: yes
   vars:
       my_order: "{{ order }}"
@@ -9,18 +9,25 @@
   become_user: root
 
   tasks:
-    - name: install apache2
-      apt: name={{item}} state=latest
-      with_items:
-        - apache2
-        - apache2-utils
-        - ssl-cert
-  # Install (Bottle) within a user home directory.
-    - name: enabled mod_rewrite
-      apache2_module: name=rewrite state=present
-      notify:
-          - restart apache2
+    - name: install necesary packages
+#      check_mode: yes
+      apt:
+        state: present
+        name: [apache2, apache2-utils, ssl-cert, mysql-server]
+
+#    - name: enabled mod_rewrite
+#      apache2_module: name=rewrite state=present
+#      notify:
+#          - restart apache2
 
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted
+
+
+
+#instalar apache
+#instalar mod_wsgi
+#instalar mysql
+#instalar venv y las dependencias del proyecto
+#instalar el proyecto

@@ -5,12 +5,14 @@ import datetime
 def run_blocks():
     '''Example of running blocks'''
     PRIVATE_DATA_DIR = '/home/marcelo/ansible'
-    PLAYBOOK='install_apache.yaml'
+    PLAYBOOK='/home/marcelo/Ansible/project/install_apache.yaml'
+    INVENTORY_PATH='/home/marcelo/Ansible/inventory'
     r = ansible_runner.run(private_data_dir=PRIVATE_DATA_DIR,
                            ident=datetime.datetime.now(),
                            playbook=PLAYBOOK,
                            quiet=False,
-                           extravars={"ansible_sudo_pass": 'linux_mint'},
+                           inventory=INVENTORY_PATH,
+                           extravars={"ansible_sudo_pass": '5375loap'},
                            event_handler=event_handler_funct())
 
     stats = r.stats
@@ -21,7 +23,8 @@ def run_blocks():
     for event in r.events:
         if event['event'] != 'verbose':
 
-            print('evento', event['event'])
+            print('evento-------------->', event['event'])
+            print(event)
 
 
 def event_handler_funct():
