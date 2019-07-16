@@ -2,23 +2,37 @@
 
 - name: playbook for install apache & mysql
   hosts: localhost
-  gather_facts: yes
+  gather_facts: no
   vars:
       my_order: "{{ order }}"
   become: yes
   become_user: root
 
   tasks:
-    - name: install necesary packages
+    - name: install necesary apache-related packages
 #      check_mode: yes
       apt:
         state: present
-        name: [apache2, apache2-utils, ssl-cert, mysql-server]
+        name: [apache2, apache2-utils, ssl-cert]
 
-#    - name: enabled mod_rewrite
-#      apache2_module: name=rewrite state=present
-#      notify:
-#          - restart apache2
+    - name: install mysql-server
+      apt:
+        state: present
+        name: mysql-server
+
+    - name: install mod_wsgi for apache
+      apt:
+        state: present
+        name: libapache2-mod-wsgi
+      notify:
+        - restart apache2
+
+    - name: install pip3
+      apt:
+        state: present
+        name: python3-pip
+
+
 
   handlers:
     - name: restart apache2
