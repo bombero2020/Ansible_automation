@@ -4,6 +4,9 @@
 [linux_cinnamon]
 192.168.139.137 ansible_user=marizaga ansible_password=linux_mint
 
+[mint_lxfe]
+192.168.188.137 ansible_user=marizaga ansible_password=5375loap
+
 [web_server]
 192.168.139.137 ansible_user=marizaga ansible_password=linux_mint
 
