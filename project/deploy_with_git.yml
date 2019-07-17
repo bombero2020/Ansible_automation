@@ -1,0 +1,13 @@
+---
+
+- name: playbook for retrieve proyect from git
+  hosts: localhost
+  gather_facts: no
+
+
+# Example git checkout from Ansible Playbooks
+  tasks:
+
+    - git:
+        repo: 'https://github.com/bombero2020/Ansible_automation.git'
+        dest: /home/marcelo/got_with_ansible
