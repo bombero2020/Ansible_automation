@@ -1,0 +1,2 @@
+[linux_cinnamon]
+192.168.139.137 ansible_user=marizaga ansible_password=linux_mint
