@@ -3,13 +3,11 @@
 - name: playbook for install apache & mysql
   hosts: localhost
   gather_facts: no
-  vars:
-      my_order: "{{ order }}"
   become: yes
   become_user: root
 
   tasks:
-    - name: install necesary apache-related packages
+    - name: install necesary apache-related apt packages
 #      check_mode: yes
       apt:
         state: present
@@ -32,8 +30,6 @@
         state: present
         name: python3-pip
 
-
-
   handlers:
     - name: restart apache2
       service: name=apache2 state=restarted
@@ -45,3 +41,6 @@
 #instalar mysql
 #instalar venv y las dependencias del proyecto
 #instalar el proyecto
+
+#debug
+# ansible-playbook -i ../inventory/hosts install_apache_and_mysql.yaml -v -K
