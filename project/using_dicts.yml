@@ -1,0 +1,17 @@
+---
+- name: playbook to train with dicts
+  hosts: localhost
+  gather_facts: no
+
+
+  tasks:
+    - set_fact:
+        padres: [{"name":'Marcelo', "surname":'Arizaga', "hijos":[]},{"name":'tina', "surname":'salazar', "hijos":[]}]
+        hijos: [{"name":'Marcos', "surname":'Arizaga', "position":1}, {"name":'Amelie', "surname":'Arizaga', "position":2}]
+        padres_y_hijos_lista: []
+
+    - set_fact:
+        padre_y_hijos_lista: "{{ padres | map('combine',{'hijos':hijos} )| list }}"
+
+    - debug:
+        msg: "{{ padre_y_hijos_lista  }}"
