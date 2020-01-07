@@ -1,0 +1,56 @@
+---
+- name: Install mysql and set the root password
+  hosts: localhost
+  gather_facts: no
+  connection: local
+
+  vars:
+    mysql_root_password: 'root123'
+
+  tasks:
+#    - name: Add the repository for MySql 5.6
+#      become: yes
+#      command: add-apt-repository 'deb http://archive.ubuntu.com/ubuntu trusty universe'
+
+#    - name: Update
+#      become: yes
+#      command: apt-get update
+
+#    - name: Install dependencies into mi_venv
+#      pip:
+#        requirements: /home/marcelo/Ansible/project/requirements.txt
+#        virtualenv: /home/marcelo/Ansible/project/mi_venv
+
+    # tasks file for mysql
+#    - name: Install the Python MySQLB module
+#      pip:
+#        name: mysql-connector
+
+#    - name: Install mysql
+#      apt: pkg={{ item }} state=present
+#      become: true
+#      with_items:
+#        - mysql-server
+#        - mysql-client
+#        - python-mysqldb
+#        - libmysqlclient-dev
+
+
+#    - name: Ensure mysql started
+#      become: yes
+#      service: name=mysql state=started enabled=yes
+
+    - name: Update MySQL root password for all root accounts
+      mysql_user: name=root
+        host={{ item }}
+        password={{ mysql_root_password }}
+        login_user=root
+        login_password="5375loap"
+        state=present
+      with_items:
+        - 127.0.0.1
+        - ::1
+        - localhost
+
+#debug
+# ansible-playbook -i ../inventory/hosts install_mysql.yml -v -K
