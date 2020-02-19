@@ -1,0 +1,46 @@
+- name: playbook to automate raspi
+  hosts: localhost
+  gather_facts: no
+#  become: yes
+#  become_user: root
+
+  tasks:
+#      - name: installing [pip, virtualenv, setuptools]
+#        apt:
+#          name: [python-pip, python-virtualenv, python-setuptools]
+#          state: present
+#
+#      - name: installing [git]
+#        apt:
+#          name: [git]
+#          state: present
+      - name: Create a directory if it does not exist
+        file:
+          path: /tmp/github_projects
+          state: directory
+          mode: '0755'
+
+
+      - name: checking out project from github
+        git:
+          repo: git@github.com:bombero2020/python_tools.git
+          dest: /tmp/github_projects
+          accept_hostkey : yes
+          key_file: /home/marcelo/.ssh/id_rsa
+
+      - name: adding a file and make git push and pull
+        shell:
+          cmd: "{{item}}"
+          chdir: /tmp/github_projects
+        loop:
+          - echo 'Hola para la prueba' >> AAABB.txt
+          - git add *
+          - git commit -m 'Ansible commit'
+          - git push
+          - git pull
+
+#      - name: installing pip packages from requirements.txt
+#        pip:
+
+
+# Debug: ansible-playbook install_pip_packages.yml -i ../inventory/hosts -v

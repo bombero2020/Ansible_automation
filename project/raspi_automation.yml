@@ -1,0 +1,26 @@
+- name: playbook to automate raspi
+  hosts: raspi
+  gather_facts: no
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: este es el primer bloque
+      block:
+      - name: install ansible
+        become: yes
+        apt:
+          name: ansible
+          state: present
+        register: installed_output
+
+      - debug:
+          msg: "{{installed_output}}"
+
+      rescue:
+        - name: the rescue block
+          debug:
+             msg: 'Algo ha ido mal ...'
+
+
+# Debug: ansible-playbook raspi_automation.yml -i ../inventory/hosts -v
