@@ -1,0 +1,7 @@
+{
+    "type": "object",
+    "properties": {
+        "nombre": {"type": "string"},
+        "age": {"type": "number"}
+    }
+}

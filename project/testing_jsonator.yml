@@ -1,0 +1,16 @@
+- name: playbook to test jsonator
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+  - name: using the jsonator module
+    jsonator:
+      src: my_first_schema.jsona
+      data: '{"nombre": "Marcelo", "age": 33}'
+    register: output
+
+  - debug:
+      msg: "{{ output }}"
+
+
+# Debug: ansible-playbook testing_jsonator.yml -i ../inventory/hosts -v

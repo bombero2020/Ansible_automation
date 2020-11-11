@@ -1,47 +1,29 @@
 ---
-
-- name: "Test for install nginx on {{linux_cinnamon}}"
-  hosts: linux_cinnamon
-  gather_facts: no
+- name: playbook for install nginx
+  hosts: localhost
+  gather_facts: yes
+  become: yes
   vars:
-      my_order: "{{ order }}"
-#  become: yes
-#  become_user: root
-
+#    ansible_python_interpreter: "/usr/bin/python3"
+# https://www.nginx.com/blog/setting-up-nginx/
+# https://medium.com/analytics-vidhya/dajngo-with-nginx-gunicorn-aaf8431dc9e0:
   tasks:
-    - name: este es el primer bloque
-      block:
-      - name: ensure the remote hosts is reachable
-        ping:
-        register: ping_out
-      - debug:
-          msg: "{{ping_out}}"
-      rescue:
-        - name: the rescue block
-          debug:
-             msg: 'Se ha ejecutado el rescue block'
-#    - name: este es el segundo bloque
-#      block:
-#        - name: this is the second block
-#          command: /bin/echo block 2 working
-#          register: command_out
-#        - name: debugging the output
-#          debug:
-#            msg: "{{command_out}}
-#      rescue:
-#          - name: the rescue block2
-#            debug:
-#              msg: 'Se ha ejecutado el rescue block2'
+    - name: apt update
+      package:
+        update_cache: yes
 
-#    - name: apt install nginx
-#      apt:
-#        name: nginx
-#        state: present
-#      register: apt_output
-#
-#    - name: Remove dependencies that are no longer required
-#      apt:
-#        autoremove: yes
-#
-#    - debug:
-#        msg: apt_output
+    - name: apt install nginx
+      package:
+        name:
+          - nginx
+        state: present
+        update_cache: yes
+      register: install_nginx_output
+
+#    - name: install nginx with shell
+#      shell: sudo apt install nginx
+
+    - name: Start service nginx, if not started
+      service:
+        name: nginx
+        state: started

@@ -1,0 +1,10 @@
+- name: Playbook for testing bastion behaviour
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: cat the file
+      shell: cat test
+
+
+#

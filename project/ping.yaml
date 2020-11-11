@@ -1,0 +1,12 @@
+---
+- name: playbook to check conectivity
+  hosts: all
+  gather_facts: no
+
+  tasks:
+      - name: ensure the remote hosts is reachable
+        ping:
+        register: ping_out
+
+      - debug:
+          msg: "{{ping_out}}"

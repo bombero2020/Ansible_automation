@@ -1,0 +1,9 @@
+{
+    "type": "object",
+    "properties": {
+        "nombre": {"type": "string"},
+        "apellido1": {"type": "string"},
+        "apellido2": {"type": "string"},
+        "fecha_nacimiento": {"type": "number"}
+    }
+}

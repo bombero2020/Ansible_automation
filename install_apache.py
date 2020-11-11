@@ -12,7 +12,7 @@ def run_blocks():
                            playbook=PLAYBOOK,
                            quiet=False,
                            inventory=INVENTORY_PATH,
-                           extravars={"ansible_sudo_pass": '5375loap'},
+                           extravars={"ansible_sudo_pass": 'secret'},
                            event_handler=event_handler_funct())
 
     stats = r.stats
