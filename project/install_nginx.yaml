@@ -1,6 +1,6 @@
 ---
 - name: playbook for install nginx
-  hosts: localhost
+  hosts: all
   gather_facts: yes
   become: yes
   vars:
