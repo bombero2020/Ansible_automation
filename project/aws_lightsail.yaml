@@ -1,0 +1,21 @@
+---
+- name: playbook to test aws_lightsail module
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    # Create a new Lightsail instance, register the instance details
+    - lightsail:
+        state: present
+        name: myinstanceWithAnsible
+        region: eu-west-3
+        zone: eu-west-3
+        blueprint_id: ubuntu_16_04
+        bundle_id: nano_1_0
+        key_pair_name: id_rsa
+        user_data: " echo 'hello marcelo' > /home/ubuntu/test.txt"
+        wait_timeout: 500
+      register: my_instance
+
+    - debug:
+        msg: "{{my_instance}}"
