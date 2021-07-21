@@ -1,0 +1,23 @@
+---
+- name: Playbook to test Create a user with sudo privileges
+  hosts: all
+  gather_facts: no
+
+  vars:
+    user: 'marizaga'
+
+  tasks:
+    - name: try to read root dir
+      shell: ls -la /
+      become_user: "{{ user }}"
+      register: test1_output
+
+    - name: Pass or fail
+      assert:
+        that:
+          - test1_output is succeeded
+        fail_msg: Test1 failed
+        success_msg: Test1 passed
+
+# debug
+# ansible-playbook test_create_sudoer_user.yml -i inventory -l ubuntu_2 -v

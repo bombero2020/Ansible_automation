@@ -1,12 +1,9 @@
 ---
 - name: playbook for install nginx
   hosts: all
-  gather_facts: yes
+  gather_facts: no
   become: yes
-  vars:
-#    ansible_python_interpreter: "/usr/bin/python3"
-# https://www.nginx.com/blog/setting-up-nginx/
-# https://medium.com/analytics-vidhya/dajngo-with-nginx-gunicorn-aaf8431dc9e0:
+
   tasks:
     - name: apt update
       package:
@@ -19,9 +16,6 @@
         state: present
         update_cache: yes
       register: install_nginx_output
-
-#    - name: install nginx with shell
-#      shell: sudo apt install nginx
 
     - name: Start service nginx, if not started
       service:

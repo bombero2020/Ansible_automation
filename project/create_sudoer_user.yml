@@ -1,0 +1,31 @@
+---
+- name: Create a user with sudo privileges
+  hosts: all
+  gather_facts: no
+
+  vars:
+    user: 'marizaga'
+
+  tasks:
+    - name: Include vars for passwd
+      include_vars:
+        name: secrets
+        file: secrets.yml
+
+    - name: Make sure we have a 'sudo' group
+      group:
+        name: sudo
+        state: present
+
+    - name: Add user to sudo group
+      user:
+        name: "{{user}}"
+        groups: sudo
+        append: yes
+        state: present
+        createhome: yes
+        password: "{{ secrets.ubuntu_2_marizaga_passwd }}"
+      become: yes
+
+# debug
+# ansible-playbook create_sudoer_user.yml -i inventory -l ubuntu_2 -v
