@@ -1,0 +1,26 @@
+- name: playbook for install python3.8
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: apt update
+      package:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: add dead snakes repository
+      ansible.builtin.apt_repository:
+        repo: ppa:deadsnakes/ppa
+        state: present
+
+    - name: install python3.8
+      package:
+        name:
+          - software-properties-common
+          - python3.8
+        state: present
+      register: install_python38_output
+
+# command
+# ansible-playbook install_python38.yml -i inventory -l ubuntu_2 -v

@@ -12,6 +12,11 @@ ansible-playbook create_sudoer_user.yml -i inventory -l ubuntu_2 -v
 ```buildoutcfg
 ansible-playbook install_nginx.yml -i inventory -l ubuntu_2 -v
 ```
+
+#### Instalar venv para el proyecto
+```buildoutcfg
+ansible-playbook install_nginx.yml -i inventory -l ubuntu_2 -v
+```
 #### Instalar Gunicorn
 
 #### Instalar Django

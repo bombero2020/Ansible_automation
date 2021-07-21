@@ -1,0 +1,19 @@
+- name: playbook for test installation of python3.8
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Test python version
+      shell: python3.8 -V
+      register: version_output
+
+    - name: Pass or Fail
+      assert:
+        that:
+          - "'Python 3.8.' in version_output.stdout"
+        fail_msg: Test1 failed
+        success_msg: Test1 passed
+
+# command
+# ansible-playbook test_install_python38.yml -i inventory -l ubuntu_2 -v
