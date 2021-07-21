@@ -1,0 +1,22 @@
+- name: playbook to test installation of nginx
+  hosts: localhost
+  gather_facts: no
+  vars:
+    IP_to_request: 35.181.57.16
+
+  tasks:
+    - name: make a request to landing page
+      uri:
+        url: "http://{{ IP_to_request }}"
+        return_content: yes
+      register: request_output
+
+    - name: Pass or Fail
+      assert:
+        that:
+          - "'Welcome to nginx!' in request_output.content"
+        fail_msg: Test1 failed
+        success_msg: Test1 passed
+
+# command
+# ansible-playbook test_install_nginx.yml -v

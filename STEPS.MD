@@ -9,7 +9,9 @@ ssh -i ubuntu-2.pem ubuntu@35.181.57.16
 ansible-playbook create_sudoer_user.yml -i inventory -l ubuntu_2 -v
 ```
 #### Instalar NGINX
-
+```buildoutcfg
+ansible-playbook install_nginx.yml -i inventory -l ubuntu_2 -v
+```
 #### Instalar Gunicorn
 
 #### Instalar Django

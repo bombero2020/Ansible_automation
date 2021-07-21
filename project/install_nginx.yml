@@ -1,8 +1,8 @@
----
 - name: playbook for install nginx
   hosts: all
   gather_facts: no
   become: yes
+#  become_user: marizaga
 
   tasks:
     - name: apt update
@@ -14,10 +14,12 @@
         name:
           - nginx
         state: present
-        update_cache: yes
       register: install_nginx_output
 
     - name: Start service nginx, if not started
       service:
         name: nginx
         state: started
+
+# command
+# ansible-playbook install_nginx.yml -i inventory -l ubuntu_2 -v
