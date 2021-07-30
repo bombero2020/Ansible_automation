@@ -1,0 +1,23 @@
+- name: playbook for create a db directory and put it as backup
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: make database directory
+      command: mkdir -p /opt/database/
+
+    - name: ensure ubuntu user can use directory
+      command: chmod -R 644 /opt/database/
+
+    - name: copy my db as backup
+      ansible.builtin.copy:
+        src: db.sqlite3
+        dest: /opt/database/db.sqlite3
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+      register: copy_output
+
+# command
+# ansible-playbook create_db_directory.yml -i inventory -l ubuntu_2 -v

@@ -1,0 +1,27 @@
+- name: playbook for deploy an app from github
+  hosts: all
+  gather_facts: no
+  become: yes
+  vars_files:
+    - secrets.yml
+  vars:
+    remote_dir_for_app: /opt/Django_project
+
+  tasks:
+    - name: git checkout from github
+      ansible.builtin.git:
+        repo: "https://{{ git_user }}:{{ git_token }}@github.com/bombero2020/Django_project.git"
+        dest: "{{ remote_dir_for_app }}"
+      register: checkout_output
+
+    - name: Change the ownership of the directory
+      file:
+        path: "{{ remote_dir_for_app }}"
+        owner: "ubuntu"
+        group: "ubuntu"
+        state: directory
+        recurse: yes
+      register: change_ownership_out
+
+# command
+# ansible-playbook deploy_app_from_github.yml -i inventory -l ubuntu_2 -v

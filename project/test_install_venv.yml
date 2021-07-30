@@ -1,0 +1,19 @@
+- name: playbook for test installation of venv
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: activate venv
+      shell: source /opt/python38_venv/bin/activate
+      register: venv_activate_output
+
+    - name: Pass or Fail
+      assert:
+        that:
+          - "'VIRTUAL_ENV' in venv_activate_output.stdout"
+        fail_msg: Test1 failed
+        success_msg: Test1 passed
+
+# command
+# ansible-playbook test_install_venv.yml -i inventory -l ubuntu_2 -v

@@ -1,0 +1,21 @@
+- name: playbook for install venv requirements
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+#    - name: Install bottle into the specified (virtualenv), inheriting none of the globally installed modules
+#      pip:
+#        name: bottle
+#        state: absent
+#        virtualenv: /opt/python38_venv
+#      register: install_botle_output
+
+    - name: Install requirements.txt
+      pip:
+        requirements: /opt/Django_project/requirements.txt
+        virtualenv: /opt/python38_venv
+      register: install_requirements_output
+
+# command
+# ansible-playbook install_venv_requirements.yml -i inventory -l ubuntu_2 -v
