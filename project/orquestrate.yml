@@ -1,0 +1,21 @@
+#- name: Step1 crear usuario marcelo con permisos de root.
+#  import_playbook: create_sudoer_user.yml
+
+#- name: Step2 Instalar NGINX.
+#  import_playbook: install_nginx.yml
+
+#- name: Step3 Instalar venv para el proyecto
+#  import_playbook: install_venv.yml
+
+#- name: Step4 Copiar la Base de datos
+#  import_playbook: create_db_directory.yml
+#
+#- name: Step5 Desplegar la app desde github
+#  import_playbook: deploy_app_from_github.yml
+
+- name: Step6 Instalar requirements (en el venv)
+  import_playbook: install_venv_requirements.yml
+
+# command
+# ansible-playbook orquestrate.yml -i inventory -l ubuntu_2 -v
+

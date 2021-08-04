@@ -2,6 +2,7 @@
   hosts: all
   gather_facts: no
   become: yes
+#  become_user: marizaga
 
   tasks:
     - name: make database directory
@@ -14,8 +15,8 @@
       ansible.builtin.copy:
         src: db.sqlite3
         dest: /opt/database/db.sqlite3
-        owner: ubuntu
-        group: ubuntu
+        owner: marizaga
+        group: marizaga
         mode: '0644'
       register: copy_output
 

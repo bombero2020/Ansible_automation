@@ -2,6 +2,7 @@
   hosts: all
   gather_facts: no
   become: yes
+#  become_user: marizaga
 
   tasks:
 #    - name: Install bottle into the specified (virtualenv), inheriting none of the globally installed modules

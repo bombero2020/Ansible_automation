@@ -1,8 +1,7 @@
----
 - name: Create a user with sudo privileges
   hosts: all
   gather_facts: no
-
+  become: yes
   vars:
     user: 'marizaga'
 
@@ -12,20 +11,27 @@
         name: secrets
         file: secrets.yml
 
-    - name: Make sure we have a 'sudo' group
+    - name: Make sure we have a 'wheel' group
       group:
-        name: sudo
+        name: wheel
         state: present
 
-    - name: Add user to sudo group
+    - name: Allow 'wheel' group to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Add user to wheel group
       user:
         name: "{{user}}"
-        groups: sudo
+        groups: wheel
         append: yes
         state: present
         createhome: yes
         password: "{{ secrets.ubuntu_2_marizaga_passwd }}"
-      become: yes
 
 # debug
 # ansible-playbook create_sudoer_user.yml -i inventory -l ubuntu_2 -v

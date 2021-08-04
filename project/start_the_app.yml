@@ -7,34 +7,46 @@
     virtualenv_dir: /opt/python38_venv
 
   tasks:
-    - name: give +x to manage.py
-      shell: chmod +x manage.py
-      args:
-        chdir: "{{ remote_dir_for_app }}"
+#    - name: give +x to manage.py
+#      shell: chmod +x manage.py
+#      args:
+#        chdir: "{{ remote_dir_for_app }}"
+#
+#    - name: Run migrations on the application installed in django_dir
+#      community.general.django_manage:
+#        command: migrate
+#        app_path: "{{ remote_dir_for_app }}"
+#        virtualenv: "{{ virtualenv_dir }}"
 
-    - name: Run cleanup on the application installed in django_dir
+    - name: Collect static files for the app
       community.general.django_manage:
-        command: migrate
+        command: collectstatic
         app_path: "{{ remote_dir_for_app }}"
         virtualenv: "{{ virtualenv_dir }}"
 
-    - name: Start the App on develop server
-      async: 60
-      poll: 10
-      shell: "(. {{ virtualenv_dir }}/bin/activate && python3.8 manage.py runserver)"
-      args:
-        chdir: "{{ remote_dir_for_app }}"
-      register: start_app_output
+#    - name: Create super user for the app
+#      community.general.django_manage:
+#        command: "createsuperuser --noinput --username=marizaga --email=marceloarizagaforonda@gmail.com"
+#        app_path: "{{ remote_dir_for_app }}"
+#        virtualenv: "{{ virtualenv_dir }}"
 
-    - name: Validating the port is open
-      tags: check_dev_server
-      wait_for:
-        host: "localhost"
-        port: 8000
-        delay: 10
-        timeout: 30
-        state: started
-        msg: "Django-dev-server is not running"
+#    - name: Start the App on develop server
+#      async: 60
+#      poll: 10
+#      shell: "(. {{ virtualenv_dir }}/bin/activate && python3.8 manage.py runserver)"
+#      args:
+#        chdir: "{{ remote_dir_for_app }}"
+#      register: start_app_output
+#
+#    - name: Validating the port is open
+#      tags: check_dev_server
+#      wait_for:
+#        host: "localhost"
+#        port: 8000
+#        delay: 10
+#        timeout: 30
+#        state: started
+#        msg: "Django-dev-server is not running"
 
 # command
 # ansible-playbook start_the_app.yml -i inventory -l ubuntu_2 -v
