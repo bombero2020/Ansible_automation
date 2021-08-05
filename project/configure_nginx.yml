@@ -1,0 +1,26 @@
+- name: Playbook for configure nginx
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: copy
+      copy:
+        src: "{{ item }}"
+        dest: /etc/nginx/sites-available/
+      loop:
+        - ./files/Django_project
+
+    - name: enable the site
+      shell: ln -s /etc/nginx/sites-available/Django_project /etc/nginx/sites-enabled
+
+    - name: Restart service nginx
+      service:
+        name: nginx
+        state: restarted
+
+# command
+# ansible-playbook configure_nginx.yml -i inventory -l ubuntu_2 -v
+
+# test
+# sudo nginx -t

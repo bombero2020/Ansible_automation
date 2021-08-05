@@ -1,0 +1,28 @@
+- name: Playbook for copy service and socket files
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: copy
+      copy:
+        src: "{{ item }}"
+        dest: /etc/systemd/system/
+      loop:
+        - ./files/gunicorn.socket
+        - ./files/gunicorn.service
+
+    - name: start the socket
+      shell: systemctl start gunicorn.socket && systemctl enable gunicorn.socket
+
+    - name: Start service gunicorn, if not started
+      service:
+        name: gunicorn
+        state: restarted
+        enabled: yes
+
+# command
+# ansible-playbook copy_service.yml -i inventory -l ubuntu_2 -v
+
+# test con curl usando el socket:
+# curl --unix-socket /run/gunicorn.sock localhost
