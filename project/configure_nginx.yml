@@ -9,10 +9,10 @@
         src: "{{ item }}"
         dest: /etc/nginx/sites-available/
       loop:
-        - ./files/Django_project
+        - ./files/inicioms
 
     - name: enable the site
-      shell: ln -s /etc/nginx/sites-available/Django_project /etc/nginx/sites-enabled
+      shell: ln -s /etc/nginx/sites-available/inicioms /etc/nginx/sites-enabled
 
     - name: Restart service nginx
       service:

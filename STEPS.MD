@@ -2,7 +2,7 @@
 
 #### Descargar la clave para conectar al servidor key.pem
 ```
-ssh -i ubuntu-2.pem ubuntu@15.188.90.80
+ssh -i ubuntu-2.pem ubuntu@15.188.81.240
 ```
 #### Paso 1: crear usuario marcelo con permisos de root.
 
@@ -37,19 +37,39 @@ ansible-playbook orquestrate.yml -i inventory -l ubuntu_2 -v
 ```
 
 ### DJANGO
-#### Migrate DDBB and Run dev server
-```commandline
+#### Migrate DDBB and Run dev server, Collect static files.
+```
 ansible-playbook start_the_app.yml -i inventory -l ubuntu_2 -v
 ```
-#### Collect static files.
 
-#### Crear super user.
+#### Crear super user. todo
 
 ### GUNICORN
 #### Create service for gunicorn
+```
+ansible-playbook copy_gunicorn_service.yml -i inventory -l ubuntu_2 -v
+```
 #### Test gunicorn config
+test con curl usando el socket:
+```
+curl --unix-socket /run/gunicorn.sock localhost
+```
+
+#### Comando para generar passwd:
+```commandline
+openssl rand -base64 32
+```
 
 ### NGNIX
-#### Create service for nginx
 #### Configure nginx
+```
+ansible-playbook configure_nginx.yml -i inventory -l ubuntu_2 -v
+```
 #### Test nginx config
+```
+sudo nginx -t
+```
+### SSL Certificates
+```
+ansible-playbook install_ssl_cerbot.yml -i inventory -l ubuntu_2 -v -t paso2
+```

@@ -22,7 +22,7 @@
         enabled: yes
 
 # command
-# ansible-playbook copy_service.yml -i inventory -l ubuntu_2 -v
+# ansible-playbook copy_gunicorn_service.yml -i inventory -l ubuntu_2 -v
 
 # test con curl usando el socket:
 # curl --unix-socket /run/gunicorn.sock localhost

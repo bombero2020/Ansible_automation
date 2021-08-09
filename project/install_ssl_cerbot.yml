@@ -1,0 +1,39 @@
+- name: Playbook for intalling ssl certificates
+  hosts: all
+  gather_facts: no
+  become: yes
+  vars:
+    domain: inicioms.com
+    documentation: https://certbot.eff.org/lets-encrypt/ubuntufocal-nginx
+
+  tasks:
+    - name: run commands from documentation
+      command:
+        cmd: "{{ item }}"
+      loop:
+        - snap install core
+        - snap refresh core
+        - apt-get remove certbot
+        - snap install --classic certbot
+        - ln -s /snap/bin/certbot /usr/bin/certbot
+      tags: paso1
+
+    - name: generate certificate and auto-renew
+      command:
+        cmd: "{{ item }}"
+      loop:
+#        - certbot --nginx -d inicioms.com ## Es dinamico !!!
+        - certbot renew --dry-run
+      tags: paso2
+
+    - name: Restart service nginx
+      service:
+        name: nginx
+        state: restarted
+      tags: paso3
+
+# command
+# ansible-playbook install_ssl_cerbot.yml -i inventory -l ubuntu_2 -v -t paso2
+
+# test
+# sudo nginx -t

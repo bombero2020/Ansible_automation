@@ -2,27 +2,44 @@
   hosts: all
   gather_facts: no
 #  become: yes
+  vars_files:
+    - secrets.yml
   vars:
     remote_dir_for_app: /opt/Django_project
     virtualenv_dir: /opt/python38_venv
+  environment:
+    SECRET: "{{ secret_key }}"
 
   tasks:
-#    - name: give +x to manage.py
-#      shell: chmod +x manage.py
-#      args:
-#        chdir: "{{ remote_dir_for_app }}"
-#
-#    - name: Run migrations on the application installed in django_dir
-#      community.general.django_manage:
-#        command: migrate
-#        app_path: "{{ remote_dir_for_app }}"
-#        virtualenv: "{{ virtualenv_dir }}"
+    - name: run migrate
+      command:
+        cmd: /opt/python38_venv/bin/python /opt/Django_project/manage.py migrate
+        creates: db.sqlite3
+      register: migrate_output
+
+#    - name: run dev server on localhost
+#      command:
+#        cmd: /opt/python38_venv/bin/python /opt/Django_project/manage.py runserver
+##      async: 20
+##      poll: 5
+#      register: run_server_output
+
+#    - name: check dev server started
+#      fail:
+#        msg: "the dev server did not started, review config"
+#      when: '"Starting development server at" not in run_server_output.stdout'
+
+    - name: Create dir for static files
+      command:
+        cmd: "{{ item }}"
+      loop:
+        - mkdir -p /var/www/inicioms.com/static
+        - chown -R ubuntu:ubuntu /var/www/inicioms.com
+      become: yes
 
     - name: Collect static files for the app
-      community.general.django_manage:
-        command: collectstatic
-        app_path: "{{ remote_dir_for_app }}"
-        virtualenv: "{{ virtualenv_dir }}"
+      command:
+        cmd: /opt/python38_venv/bin/python /opt/Django_project/manage.py collectstatic
 
 #    - name: Create super user for the app
 #      community.general.django_manage:
