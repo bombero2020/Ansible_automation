@@ -9,14 +9,14 @@
       command: mkdir -p /opt/database/
 
     - name: ensure ubuntu user can use directory
-      command: chmod -R 644 /opt/database/
+      command: chown -R ubuntu:ubuntu /opt/database/
 
     - name: copy my db as backup
       ansible.builtin.copy:
         src: db.sqlite3
         dest: /opt/database/db.sqlite3
-        owner: marizaga
-        group: marizaga
+        owner: ubuntu
+        group: ubuntu
         mode: '0644'
       register: copy_output
 
