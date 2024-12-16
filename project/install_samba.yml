@@ -1,0 +1,49 @@
+---
+- name: Playbook para instalar y configurar Samba en Ubuntu 22.04
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Actualizar los repositorios de apt
+      apt:
+        update_cache: yes
+
+    - name: Instalar el paquete de Samba
+      apt:
+        name: samba
+        state: present
+
+    - name: Crear un directorio para compartir
+      file:
+        path: /srv/compartido
+        state: directory
+        owner: nobody
+        group: nogroup
+        mode: '0777'
+
+    - name: Configurar el recurso compartido en el archivo smb.conf
+      blockinfile:
+        path: /etc/samba/smb.conf
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        block: |
+          [publico]
+          path = /srv/compartido
+          browseable = yes
+          writable = yes
+          guest ok = yes
+          read only = no
+
+    - name: Reiniciar el servicio de Samba para aplicar los cambios
+      service:
+        name: smbd
+        state: restarted
+
+    # - name: Permitir Samba en el firewall
+    #   ufw:
+    #     rule: allow
+    #     name: Samba
+
+# command:
+# podman run -it -v .:/ansible_automation b42b6033e645 bash
+# ansible-playbook install_samba.yml -i inventory -l garaje_server -v

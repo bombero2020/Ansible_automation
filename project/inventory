@@ -9,3 +9,6 @@
 
 [localhost]
 localhost ansible_user=marcelo ansible_password=
+
+[home]
+garaje_server ansible_host=192.168.1.40 ansible_user=marizaga ansible_password=
